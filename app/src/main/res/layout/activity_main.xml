@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="24dp"
+        android:gravity="center_horizontal"
+        android:layoutDirection="rtl">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="כרטיס ביקור 📇"
+            android:textSize="28sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:padding="16dp" />
+
+        <EditText
+            android:id="@+id/etName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="שם מלא"
+            android:inputType="textPersonName"
+            android:singleLine="true" />
+
+        <EditText
+            android:id="@+id/etJob"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="תפקיד"
+            android:inputType="textCapSentences"
+            android:singleLine="true" />
+
+        <EditText
+            android:id="@+id/etPhone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="טלפון"
+            android:inputType="phone"
+            android:singleLine="true" />
+
+        <EditText
+            android:id="@+id/etSite"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="אתר"
+            android:inputType="textUri"
+            android:singleLine="true" />
+
+        <Button
+            android:id="@+id/btnCreateCard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="צור כרטיס" />
+
+        <Button
+            android:id="@+id/btnAbout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="אודות" />
+
+        <Button
+            android:id="@+id/btnExample"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="מלא דוגמה ✨" />
+
+    </LinearLayout>
+</ScrollView>
