@@ -43,6 +43,7 @@ public class MainActivity extends Activity {
                 String phone = etPhone.getText().toString().trim();
                 String site = etSite.getText().toString().trim();
 
+                //אם השם ריק להציג הודעה
                 if (name.isEmpty()) {
                     Toast.makeText(MainActivity.this, "נא להזין שם",
                             Toast.LENGTH_SHORT).show();
@@ -60,6 +61,7 @@ public class MainActivity extends Activity {
             }
         });
 
+        //כפתור אודות
         btnAbout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -68,6 +70,8 @@ public class MainActivity extends Activity {
             }
         });
 
+
+        //לחיצה על כפתור הדוגמא
         btnExample.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
