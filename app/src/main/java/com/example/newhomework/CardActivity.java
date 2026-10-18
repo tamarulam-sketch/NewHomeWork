@@ -37,6 +37,7 @@ public class CardActivity extends Activity {
         if (phone == null) phone = "";
         if (site == null) site = "";
 
+        //חיבור מהאקסמל לפה
         TextView tvName = findViewById(R.id.tvName);
         TextView tvJob = findViewById(R.id.tvJob);
         TextView tvPhone = findViewById(R.id.tvPhone);
@@ -83,8 +84,7 @@ public class CardActivity extends Activity {
             public void onClick(View v) {
 
                 if (site.trim().isEmpty()) {
-                    Toast.makeText(
-                            CardActivity.this, "לא הוזן אתר", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(CardActivity.this, "לא הוזן אתר", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
@@ -112,7 +112,7 @@ public class CardActivity extends Activity {
             @Override
             public void onClick(View v) {
 
-                //קארד טקסט מכיל את כל פרטי הכרטיס
+                //קארד-טקסט מכיל את כל פרטי הכרטיס
                 String cardText =
                         "כרטיס ביקור\n"
                                 + "שם: " + name + "\n"
@@ -121,13 +121,15 @@ public class CardActivity extends Activity {
                                 + "אתר: " + site;
 
 
+                //יוצרים בקשה לשיתוף מידע (הכפתור שיתוף)
                 Intent shareIntent = new Intent(Intent.ACTION_SEND);
                 shareIntent.setType("text/plain");
                 shareIntent.putExtra(Intent.EXTRA_TEXT, cardText);
 
-                Intent chooser = Intent.createChooser(shareIntent, "שתף כרטיס עם..."
-                );
+                //יוצרת חלון שיתוף
+                Intent chooser = Intent.createChooser(shareIntent, "שתף כרטיס עם...");
 
+                //טיפול במקרה של שגיאה
                 try {
                     startActivity(chooser);
                 }

@@ -19,6 +19,7 @@
             android:textSize="28sp"
             android:textStyle="bold"
             android:gravity="center"
+            android:textColor="#CA6C6C"
             android:padding="16dp" />
 
         <EditText
