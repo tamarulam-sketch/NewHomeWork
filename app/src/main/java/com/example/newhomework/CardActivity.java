@@ -120,7 +120,7 @@ public class CardActivity extends Activity {
                                 + "טלפון: " + phone + "\n"
                                 + "אתר: " + site;
 
-                
+
                 Intent shareIntent = new Intent(Intent.ACTION_SEND);
                 shareIntent.setType("text/plain");
                 shareIntent.putExtra(Intent.EXTRA_TEXT, cardText);
