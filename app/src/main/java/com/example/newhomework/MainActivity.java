@@ -45,8 +45,7 @@ public class MainActivity extends Activity {
 
                 //אם השם ריק להציג הודעה
                 if (name.isEmpty()) {
-                    Toast.makeText(MainActivity.this, "נא להזין שם",
-                            Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "נא להזין שם", Toast.LENGTH_SHORT).show();
                     return;
                 }
 

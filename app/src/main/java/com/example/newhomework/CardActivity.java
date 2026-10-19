@@ -1,4 +1,3 @@
-
 package com.example.newhomework;
 
 import android.app.Activity;

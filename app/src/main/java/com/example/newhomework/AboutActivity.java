@@ -14,6 +14,7 @@ public class AboutActivity extends Activity {
 
         Button btnBack = findViewById(R.id.btnBack);
 
+        //כפתור חזור
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
