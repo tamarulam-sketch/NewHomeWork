@@ -1,14 +1,17 @@
+
 package com.example.newhomework;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-public class MainActivity extends Activity {
+import androidx.appcompat.app.AppCompatActivity;
+
+public class MainActivity extends AppCompatActivity {
 
     public static final String KEY_NAME = "name";
     public static final String KEY_JOB = "job";
@@ -25,60 +28,83 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // חיבור ארבעת שדות הטופס
         etName = findViewById(R.id.etName);
         etJob = findViewById(R.id.etJob);
         etPhone = findViewById(R.id.etPhone);
         etSite = findViewById(R.id.etSite);
 
+        // מעבר למסך הכרטיס
         Button btnCreateCard = findViewById(R.id.btnCreateCard);
-        Button btnAbout = findViewById(R.id.btnAbout);
-        Button btnExample = findViewById(R.id.btnExample);
 
-        btnCreateCard.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        btnCreateCard.setOnClickListener(v -> {
+            Intent intent = new Intent(
+                    MainActivity.this, CardActivity.class);
 
-                String name = etName.getText().toString().trim();
-                String job = etJob.getText().toString().trim();
-                String phone = etPhone.getText().toString().trim();
-                String site = etSite.getText().toString().trim();
+            intent.putExtra(KEY_NAME, etName.getText().toString().trim());
+            intent.putExtra(KEY_JOB, etJob.getText().toString().trim());
+            intent.putExtra(KEY_PHONE, etPhone.getText().toString().trim());
+            intent.putExtra(KEY_SITE, etSite.getText().toString().trim());
 
-                //אם השם ריק להציג הודעה
-                if (name.isEmpty()) {
-                    Toast.makeText(MainActivity.this, "נא להזין שם", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
-                Intent intent = new Intent(MainActivity.this, CardActivity.class);
-
-                intent.putExtra(KEY_NAME, name);
-                intent.putExtra(KEY_JOB, job);
-                intent.putExtra(KEY_PHONE, phone);
-                intent.putExtra(KEY_SITE, site);
-
-                startActivity(intent);
-            }
+            startActivity(intent);
         });
+    }
 
-        //כפתור אודות
-        btnAbout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, AboutActivity.class);
-                startActivity(intent);
+    // יצירת התפריט העליון
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        return true;
+    }
+
+    // טיפול בלחיצה על פריט בתפריט
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        int id = item.getItemId();
+
+        // נקה
+        if (id == R.id.action_clear) {
+
+            boolean isEmpty =
+                    etName.getText().toString().trim().isEmpty()
+                            && etJob.getText().toString().trim().isEmpty()
+                            && etPhone.getText().toString().trim().isEmpty()
+                            && etSite.getText().toString().trim().isEmpty();
+
+            etName.setText("");
+            etJob.setText("");
+            etPhone.setText("");
+            etSite.setText("");
+
+            if (isEmpty) {
+                Toast.makeText(this, "הטופס כבר ריק",
+                        Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, "הטופס נוקה",
+                        Toast.LENGTH_SHORT).show();
             }
-        });
 
+            return true;
+        }
 
-        //לחיצה על כפתור הדוגמא
-        btnExample.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                etName.setText("נור חליל");
-                etJob.setText("מפתח אנדרואיד");
-                etPhone.setText("0501234567");
-                etSite.setText("ort.org.il");
-            }
-        });
+        // דוגמה
+        if (id == R.id.action_fill) {
+            etName.setText("ישראל ישראלי");
+            etJob.setText("מפתח תוכנה");
+            etPhone.setText("0501234567");
+            etSite.setText("www.example.com");
+            return true;
+        }
+
+        // אודות
+        if (id == R.id.action_about) {
+            Intent intent = new Intent(
+                    MainActivity.this, AboutActivity.class);
+            startActivity(intent);
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }
