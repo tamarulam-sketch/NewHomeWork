@@ -78,27 +78,19 @@ public class CardActivity extends Activity {
         if (id == R.id.action_dial) {
 
             if (phone.trim().isEmpty()) {
-                Toast.makeText(
-                        this,
-                        "לא הוזן מספר טלפון",
-                        Toast.LENGTH_SHORT
-                ).show();
+                Toast.makeText(this, "לא הוזן מספר טלפון", Toast.LENGTH_SHORT).show();
                 return true;
             }
 
-            Intent dialIntent = new Intent(
-                    Intent.ACTION_DIAL,
+            Intent dialIntent = new Intent(Intent.ACTION_DIAL,
                     Uri.parse("tel:" + phone)
             );
 
             try {
                 startActivity(dialIntent);
-            } catch (ActivityNotFoundException e) {
-                Toast.makeText(
-                        this,
-                        "אין אפליקציה מתאימה",
-                        Toast.LENGTH_SHORT
-                ).show();
+            }
+            catch (ActivityNotFoundException e) {
+                Toast.makeText(this, "אין אפליקציה מתאימה", Toast.LENGTH_SHORT).show();
             }
 
             return true;
@@ -117,19 +109,13 @@ public class CardActivity extends Activity {
             shareIntent.setType("text/plain");
             shareIntent.putExtra(Intent.EXTRA_TEXT, cardText);
 
-            Intent chooser = Intent.createChooser(
-                    shareIntent,
-                    "שתף כרטיס עם..."
-            );
+            Intent chooser = Intent.createChooser(shareIntent, "שתף כרטיס עם...");
 
             try {
                 startActivity(chooser);
-            } catch (ActivityNotFoundException e) {
-                Toast.makeText(
-                        this,
-                        "אין אפליקציה מתאימה",
-                        Toast.LENGTH_SHORT
-                ).show();
+            }
+            catch (ActivityNotFoundException e) {
+                Toast.makeText(this, "אין אפליקציה מתאימה", Toast.LENGTH_SHORT).show();
             }
 
             return true;
@@ -139,34 +125,24 @@ public class CardActivity extends Activity {
         if (id == R.id.action_web) {
 
             if (site.trim().isEmpty()) {
-                Toast.makeText(
-                        this,
-                        "לא הוזן אתר",
-                        Toast.LENGTH_SHORT
-                ).show();
+                Toast.makeText(this, "לא הוזן אתר", Toast.LENGTH_SHORT).show();
                 return true;
             }
 
             String address = site.trim();
 
-            if (!address.startsWith("http://")
-                    && !address.startsWith("https://")) {
+            if (!address.startsWith("http://") && !address.startsWith("https://"))
+            {
                 address = "https://" + address;
             }
 
-            Intent webIntent = new Intent(
-                    Intent.ACTION_VIEW,
-                    Uri.parse(address)
-            );
+            Intent webIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(address));
 
             try {
                 startActivity(webIntent);
-            } catch (ActivityNotFoundException e) {
-                Toast.makeText(
-                        this,
-                        "אין אפליקציה מתאימה",
-                        Toast.LENGTH_SHORT
-                ).show();
+            }
+            catch (ActivityNotFoundException e) {
+                Toast.makeText(this, "אין אפליקציה מתאימה", Toast.LENGTH_SHORT).show();
             }
 
             return true;

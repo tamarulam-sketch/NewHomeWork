@@ -1,12 +1,13 @@
 <resources>
     <string name="app_name">NewHomeWork</string>
+
+<!--    מגדירים את המחרוזות-->
     <string name="action_logIn">Login</string>
     <string name="action_logout">Logout</string>
     <string name="action_logInfo">LogInfo</string>
     <string name="add">Add</string>
     <string name="reset">reset</string>
     <string name="about">about</string>
-
     <string name="clear">נקה</string>
     <string name="fill_example">דוגמה</string>
     <string name="share">שתף</string>

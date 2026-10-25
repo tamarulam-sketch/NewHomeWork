@@ -67,11 +67,11 @@
             android:layout_height="wrap_content"
             android:text="אודות" />
 
-        <Button
-            android:id="@+id/btnExample"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="מלא דוגמה ✨" />
+<!--        <Button-->
+<!--            android:id="@+id/btnExample"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="מלא דוגמה ✨" />-->
 
     </LinearLayout>
 </ScrollView>

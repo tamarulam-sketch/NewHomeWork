@@ -66,8 +66,7 @@ public class MainActivity extends AppCompatActivity {
         // נקה
         if (id == R.id.action_clear) {
 
-            boolean isEmpty =
-                    etName.getText().toString().trim().isEmpty()
+            boolean isEmpty = etName.getText().toString().trim().isEmpty()
                             && etJob.getText().toString().trim().isEmpty()
                             && etPhone.getText().toString().trim().isEmpty()
                             && etSite.getText().toString().trim().isEmpty();
@@ -77,14 +76,14 @@ public class MainActivity extends AppCompatActivity {
             etPhone.setText("");
             etSite.setText("");
 
-            if (isEmpty) {
-                Toast.makeText(this, "הטופס כבר ריק",
-                        Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(this, "הטופס נוקה",
-                        Toast.LENGTH_SHORT).show();
+            if (isEmpty)
+            {
+                Toast.makeText(this, "הטופס כבר ריק", Toast.LENGTH_SHORT).show();
             }
-
+            else
+            {
+                Toast.makeText(this, "הטופס נוקה", Toast.LENGTH_SHORT).show();
+            }
             return true;
         }
 
