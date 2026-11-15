@@ -1,3 +1,4 @@
+
 package com.example.newhomework;
 
 import android.app.Activity;
@@ -14,6 +15,8 @@ import android.widget.Toast;
 
 public class CardActivity extends Activity {
 
+    // פרטי כרטיס הביקור
+    private String key;
     private String name;
     private String job;
     private String phone;
@@ -27,6 +30,7 @@ public class CardActivity extends Activity {
         // קבלת הנתונים מהמסך הקודם
         Intent receivedIntent = getIntent();
 
+        key = receivedIntent.getStringExtra(MainActivity.KEY_CARD);
         name = receivedIntent.getStringExtra(MainActivity.KEY_NAME);
         job = receivedIntent.getStringExtra(MainActivity.KEY_JOB);
         phone = receivedIntent.getStringExtra(MainActivity.KEY_PHONE);
@@ -50,7 +54,7 @@ public class CardActivity extends Activity {
         tvPhone.setText("📞 " + phone);
         tvSite.setText("🌐 " + site);
 
-        // כפתור החזרה נשאר במסך
+        // כפתור חזרה
         Button btnBack = findViewById(R.id.btnBack);
 
         btnBack.setOnClickListener(new View.OnClickListener() {
@@ -74,6 +78,19 @@ public class CardActivity extends Activity {
 
         int id = item.getItemId();
 
+        // מעבר לטופס כדי לערוך את הכרטיס הקיים
+        if (id == R.id.action_edit) {
+            Intent editIntent = new Intent(this, MainActivity.class);
+            editIntent.putExtra(MainActivity.KEY_CARD, key);
+            editIntent.putExtra(MainActivity.KEY_NAME, name);
+            editIntent.putExtra(MainActivity.KEY_JOB, job);
+            editIntent.putExtra(MainActivity.KEY_PHONE, phone);
+            editIntent.putExtra(MainActivity.KEY_SITE, site);
+            startActivity(editIntent);
+            finish();
+            return true;
+        }
+
         // חיוג למספר הטלפון
         if (id == R.id.action_dial) {
 
@@ -82,14 +99,14 @@ public class CardActivity extends Activity {
                 return true;
             }
 
-            Intent dialIntent = new Intent(Intent.ACTION_DIAL,
+            Intent dialIntent = new Intent(
+                    Intent.ACTION_DIAL,
                     Uri.parse("tel:" + phone)
             );
 
             try {
                 startActivity(dialIntent);
-            }
-            catch (ActivityNotFoundException e) {
+            } catch (ActivityNotFoundException e) {
                 Toast.makeText(this, "אין אפליקציה מתאימה", Toast.LENGTH_SHORT).show();
             }
 
@@ -113,8 +130,7 @@ public class CardActivity extends Activity {
 
             try {
                 startActivity(chooser);
-            }
-            catch (ActivityNotFoundException e) {
+            } catch (ActivityNotFoundException e) {
                 Toast.makeText(this, "אין אפליקציה מתאימה", Toast.LENGTH_SHORT).show();
             }
 
@@ -131,8 +147,7 @@ public class CardActivity extends Activity {
 
             String address = site.trim();
 
-            if (!address.startsWith("http://") && !address.startsWith("https://"))
-            {
+            if (!address.startsWith("http://") && !address.startsWith("https://")) {
                 address = "https://" + address;
             }
 
@@ -140,8 +155,7 @@ public class CardActivity extends Activity {
 
             try {
                 startActivity(webIntent);
-            }
-            catch (ActivityNotFoundException e) {
+            } catch (ActivityNotFoundException e) {
                 Toast.makeText(this, "אין אפליקציה מתאימה", Toast.LENGTH_SHORT).show();
             }
 

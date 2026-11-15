@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">NewHomeWork</string>
 
-<!--    מגדירים את המחרוזות-->
+    <!--    מגדירים את המחרוזות-->
     <string name="action_logIn">Login</string>
     <string name="action_logout">Logout</string>
     <string name="action_logInfo">LogInfo</string>
