@@ -7,17 +7,17 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
 
-    public static final String KEY_NAME = "name";
-    public static final String KEY_JOB = "job";
-    public static final String KEY_PHONE = "phone";
-    public static final String KEY_SITE = "site";
+    public static final String KEY_NAME = "KEY_NAME";
+    public static final String KEY_JOB = "KEY_JOB";
+    public static final String KEY_PHONE = "KEY_PHONE";
+    public static final String KEY_SITE = "KEY_SITE";
 
+    // שומרים את שדות הטקסט כדי שנוכל להשתמש בהם גם בתפריט
     private EditText etName;
     private EditText etJob;
     private EditText etPhone;
@@ -26,80 +26,82 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // הצגת מסך הבית מתוך קובץ XML
         setContentView(R.layout.activity_main);
 
-        // חיבור ארבעת שדות הטופס
+        // קישור הרכיבים
         etName = findViewById(R.id.etName);
         etJob = findViewById(R.id.etJob);
         etPhone = findViewById(R.id.etPhone);
         etSite = findViewById(R.id.etSite);
 
-        // מעבר למסך הכרטיס
         Button btnCreateCard = findViewById(R.id.btnCreateCard);
+        Button btnAbout = findViewById(R.id.btnAbout);
 
+        // כפתור יצירת כרטיס ביקור
         btnCreateCard.setOnClickListener(v -> {
-            Intent intent = new Intent(
-                    MainActivity.this, CardActivity.class);
 
-            intent.putExtra(KEY_NAME, etName.getText().toString().trim());
-            intent.putExtra(KEY_JOB, etJob.getText().toString().trim());
-            intent.putExtra(KEY_PHONE, etPhone.getText().toString().trim());
-            intent.putExtra(KEY_SITE, etSite.getText().toString().trim());
+            String name = etName.getText().toString();
+            String job = etJob.getText().toString();
+            String phone = etPhone.getText().toString();
+            String site = etSite.getText().toString();
+
+            Intent intent = new Intent(MainActivity.this,
+                    CardActivity.class);
+
+            intent.putExtra(KEY_NAME, name);
+            intent.putExtra(KEY_JOB, job);
+            intent.putExtra(KEY_PHONE, phone);
+            intent.putExtra(KEY_SITE, site);
+
+            startActivity(intent);
+        });
+
+        // כפתור אודות
+        btnAbout.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this,
+                    AboutActivity.class);
 
             startActivity(intent);
         });
     }
 
-    // יצירת התפריט העליון
+    // הצגת התפריט העליון
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_menu, menu);
         return true;
     }
 
-    // טיפול בלחיצה על פריט בתפריט
+    // טיפול בלחיצה על אפשרויות התפריט
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
         int id = item.getItemId();
 
-        // נקה
+        // ניקוי כל השדות
         if (id == R.id.action_clear) {
-
-            boolean isEmpty = etName.getText().toString().trim().isEmpty()
-                            && etJob.getText().toString().trim().isEmpty()
-                            && etPhone.getText().toString().trim().isEmpty()
-                            && etSite.getText().toString().trim().isEmpty();
-
             etName.setText("");
             etJob.setText("");
             etPhone.setText("");
             etSite.setText("");
-
-            if (isEmpty)
-            {
-                Toast.makeText(this, "הטופס כבר ריק", Toast.LENGTH_SHORT).show();
-            }
-            else
-            {
-                Toast.makeText(this, "הטופס נוקה", Toast.LENGTH_SHORT).show();
-            }
             return true;
         }
 
-        // דוגמה
+        // מילוי פרטים לדוגמה
         if (id == R.id.action_fill) {
             etName.setText("ישראל ישראלי");
-            etJob.setText("מפתח תוכנה");
+            etJob.setText("מעצב גרפי");
             etPhone.setText("0501234567");
             etSite.setText("www.example.com");
             return true;
         }
 
-        // אודות
+        // מעבר למסך אודות
         if (id == R.id.action_about) {
-            Intent intent = new Intent(
-                    MainActivity.this, AboutActivity.class);
+            Intent intent = new Intent(MainActivity.this,
+                    AboutActivity.class);
             startActivity(intent);
             return true;
         }
