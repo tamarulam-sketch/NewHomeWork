@@ -15,6 +15,9 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
 
+//המסך שבו ממלאים את הפרטים של כרטיס הביקור, כמו שם, תפקיד, טלפון ואתר
+// המחלקה אחראית לשמור כרטיס חדש או לעדכן כרטיס קיים ב-Firebase
+
 public class MainActivity extends AppCompatActivity {
 
     // שמות ה-Extras נשארים קבועים כדי שכל המסכים ישתמשו באותם שמות
@@ -66,6 +69,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    //משימה עצמית
     private void saveCard() {
         String name = etName.getText().toString().trim();
         String job = etJob.getText().toString().trim();
@@ -94,8 +98,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
             card.setKey(key);
-            ref.child(key).setValue(card)
-                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+            ref.child(key).setValue(card).addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void unused) {
                             Toast.makeText(MainActivity.this,
@@ -137,6 +140,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    //משימה עצמית גם
     private void openCard(Card c) {
         Intent intent = new Intent(this, CardActivity.class);
         intent.putExtra(KEY_CARD, c.getKey());
@@ -147,6 +151,7 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    //משימה עצמית
     private void clearForm() {
         etName.setText("");
         etJob.setText("");

@@ -13,6 +13,8 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+//מחלקה המציגה את הפרטים במלאים של כרטיס ביקור מסויים (עריכת כרטיס, חיוב, שיתוף, פתיחת אתר וזה)
+
 public class CardActivity extends Activity {
 
     // פרטי כרטיס הביקור
@@ -78,7 +80,7 @@ public class CardActivity extends Activity {
 
         int id = item.getItemId();
 
-        // מעבר לטופס כדי לערוך את הכרטיס הקיים
+        // בודק אם המשתמש ללחץ על עריכה- מעבר לטופס כדי לערוך את הכרטיס הקיים
         if (id == R.id.action_edit) {
             Intent editIntent = new Intent(this, MainActivity.class);
             editIntent.putExtra(MainActivity.KEY_CARD, key);
@@ -106,7 +108,8 @@ public class CardActivity extends Activity {
 
             try {
                 startActivity(dialIntent);
-            } catch (ActivityNotFoundException e) {
+            }
+            catch (ActivityNotFoundException e) {
                 Toast.makeText(this, "אין אפליקציה מתאימה", Toast.LENGTH_SHORT).show();
             }
 
@@ -130,7 +133,8 @@ public class CardActivity extends Activity {
 
             try {
                 startActivity(chooser);
-            } catch (ActivityNotFoundException e) {
+            }
+            catch (ActivityNotFoundException e) {
                 Toast.makeText(this, "אין אפליקציה מתאימה", Toast.LENGTH_SHORT).show();
             }
 
@@ -155,13 +159,15 @@ public class CardActivity extends Activity {
 
             try {
                 startActivity(webIntent);
-            } catch (ActivityNotFoundException e) {
+            }
+            catch (ActivityNotFoundException e) {
                 Toast.makeText(this, "אין אפליקציה מתאימה", Toast.LENGTH_SHORT).show();
             }
 
             return true;
         }
 
+        //במידה ולא טיפלנו בעצמנו באפשרות שנבחרה בתפריט, מעבירים את הטיפול למחלקת האב
         return super.onOptionsItemSelected(item);
     }
 }

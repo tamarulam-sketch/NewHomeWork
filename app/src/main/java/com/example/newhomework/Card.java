@@ -2,6 +2,7 @@ package com.example.newhomework;
 
 import com.google.firebase.database.Exclude;
 
+//המחלקה מייצגת כרטיס ביקור
 public class Card {
 
     // ארבעת השדות שנשמרים בענן

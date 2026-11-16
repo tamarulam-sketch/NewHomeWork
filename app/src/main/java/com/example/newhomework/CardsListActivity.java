@@ -22,6 +22,8 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
+//מחלקה המציגה רשימה של כרטיסי הביקור שנשמר בענן
+
 public class CardsListActivity extends AppCompatActivity {
 
     private ListView lvCards;
@@ -67,6 +69,7 @@ public class CardsListActivity extends AppCompatActivity {
 
         ref = CardsDb.cards(this);
 
+        //משימה אישית!
         // מאזין שמקבל את כל הכרטיסים בכל שינוי בענן
         listener = new ValueEventListener() {
             @Override
@@ -93,9 +96,10 @@ public class CardsListActivity extends AppCompatActivity {
             }
         };
 
+        //גםמשימה כזה אישית
         ref.addValueEventListener(listener);
 
-        // לחיצה רגילה פותחת את הכרטיס שנבחר
+        // לחיצה רגילה פותחת את הכרטיס שנבחר (השלמה עצמית)
         lvCards.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
@@ -112,7 +116,7 @@ public class CardsListActivity extends AppCompatActivity {
             }
         });
 
-        // לחיצה ארוכה מבקשת אישור למחיקה
+        // משימה - לחיצה ארוכה מבקשת אישור למחיקה
         lvCards.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view,
@@ -151,6 +155,7 @@ public class CardsListActivity extends AppCompatActivity {
                 .show();
     }
 
+    //משימה
     @Override
     protected void onDestroy() {
         super.onDestroy();
