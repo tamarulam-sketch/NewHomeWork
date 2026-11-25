@@ -1,23 +1,22 @@
 
 package com.example.newhomework;
 
-import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-//מחלקה המציגה את הפרטים במלאים של כרטיס ביקור מסויים (עריכת כרטיס, חיוב, שיתוף, פתיחת אתר וזה)
+import androidx.appcompat.app.AppCompatActivity;
 
-public class CardActivity extends Activity {
+// מחלקה המציגה כרטיס ביקור ומאפשרת לבצע פעולות עליו
+public class CardActivity extends AppCompatActivity {
 
-    // פרטי כרטיס הביקור
+    // פרטי הכרטיס
     private String key;
     private String name;
     private String job;
@@ -28,6 +27,13 @@ public class CardActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_card);
+
+        // הגדרת הכותרת וחץ החזרה בסרגל העליון
+        setTitle("הכרטיסים");
+
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
 
         // קבלת הנתונים מהמסך הקודם
         Intent receivedIntent = getIntent();
@@ -44,7 +50,7 @@ public class CardActivity extends Activity {
         if (phone == null) phone = "";
         if (site == null) site = "";
 
-        // חיבור הרכיבים מה-XML
+        // חיבור רכיבי המסך
         TextView tvName = findViewById(R.id.tvName);
         TextView tvJob = findViewById(R.id.tvJob);
         TextView tvPhone = findViewById(R.id.tvPhone);
@@ -56,40 +62,46 @@ public class CardActivity extends Activity {
         tvPhone.setText("📞 " + phone);
         tvSite.setText("🌐 " + site);
 
-        // כפתור חזרה
+        // כפתור חזרה שנמצא במסך
         Button btnBack = findViewById(R.id.btnBack);
 
-        btnBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        btnBack.setOnClickListener(v -> finish());
     }
 
-    // יצירת התפריט בסרגל העליון
+    // יצירת התפריט העליון
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.card_menu, menu);
         return true;
     }
 
-    // טיפול בבחירה בתפריט
+    // טיפול בלחיצות על התפריט
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
         int id = item.getItemId();
 
-        // בודק אם המשתמש ללחץ על עריכה- מעבר לטופס כדי לערוך את הכרטיס הקיים
+        // חזרה למסך הקודם
+        if (id == android.R.id.home) {
+            finish();
+            return true;
+        }
+
+        // עריכת הכרטיס
         if (id == R.id.action_edit) {
-            Intent editIntent = new Intent(this, MainActivity.class);
+
+            Intent editIntent =
+                    new Intent(this, MainActivity.class);
+
             editIntent.putExtra(MainActivity.KEY_CARD, key);
             editIntent.putExtra(MainActivity.KEY_NAME, name);
             editIntent.putExtra(MainActivity.KEY_JOB, job);
             editIntent.putExtra(MainActivity.KEY_PHONE, phone);
             editIntent.putExtra(MainActivity.KEY_SITE, site);
+
             startActivity(editIntent);
             finish();
+
             return true;
         }
 
@@ -97,7 +109,9 @@ public class CardActivity extends Activity {
         if (id == R.id.action_dial) {
 
             if (phone.trim().isEmpty()) {
-                Toast.makeText(this, "לא הוזן מספר טלפון", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this,
+                        "לא הוזן מספר טלפון",
+                        Toast.LENGTH_SHORT).show();
                 return true;
             }
 
@@ -108,9 +122,10 @@ public class CardActivity extends Activity {
 
             try {
                 startActivity(dialIntent);
-            }
-            catch (ActivityNotFoundException e) {
-                Toast.makeText(this, "אין אפליקציה מתאימה", Toast.LENGTH_SHORT).show();
+            } catch (ActivityNotFoundException e) {
+                Toast.makeText(this,
+                        "אין אפליקציה מתאימה",
+                        Toast.LENGTH_SHORT).show();
             }
 
             return true;
@@ -125,17 +140,23 @@ public class CardActivity extends Activity {
                     + "טלפון: " + phone + "\n"
                     + "אתר: " + site;
 
-            Intent shareIntent = new Intent(Intent.ACTION_SEND);
+            Intent shareIntent =
+                    new Intent(Intent.ACTION_SEND);
+
             shareIntent.setType("text/plain");
             shareIntent.putExtra(Intent.EXTRA_TEXT, cardText);
 
-            Intent chooser = Intent.createChooser(shareIntent, "שתף כרטיס עם...");
+            Intent chooser = Intent.createChooser(
+                    shareIntent,
+                    "שתף כרטיס עם..."
+            );
 
             try {
                 startActivity(chooser);
-            }
-            catch (ActivityNotFoundException e) {
-                Toast.makeText(this, "אין אפליקציה מתאימה", Toast.LENGTH_SHORT).show();
+            } catch (ActivityNotFoundException e) {
+                Toast.makeText(this,
+                        "אין אפליקציה מתאימה",
+                        Toast.LENGTH_SHORT).show();
             }
 
             return true;
@@ -145,29 +166,35 @@ public class CardActivity extends Activity {
         if (id == R.id.action_web) {
 
             if (site.trim().isEmpty()) {
-                Toast.makeText(this, "לא הוזן אתר", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this,
+                        "לא הוזן אתר",
+                        Toast.LENGTH_SHORT).show();
                 return true;
             }
 
             String address = site.trim();
 
-            if (!address.startsWith("http://") && !address.startsWith("https://")) {
+            if (!address.startsWith("http://")
+                    && !address.startsWith("https://")) {
                 address = "https://" + address;
             }
 
-            Intent webIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(address));
+            Intent webIntent = new Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse(address)
+            );
 
             try {
                 startActivity(webIntent);
-            }
-            catch (ActivityNotFoundException e) {
-                Toast.makeText(this, "אין אפליקציה מתאימה", Toast.LENGTH_SHORT).show();
+            } catch (ActivityNotFoundException e) {
+                Toast.makeText(this,
+                        "אין אפליקציה מתאימה",
+                        Toast.LENGTH_SHORT).show();
             }
 
             return true;
         }
 
-        //במידה ולא טיפלנו בעצמנו באפשרות שנבחרה בתפריט, מעבירים את הטיפול למחלקת האב
         return super.onOptionsItemSelected(item);
     }
 }

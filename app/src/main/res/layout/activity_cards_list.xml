@@ -18,12 +18,14 @@
         android:gravity="center"
         android:padding="12dp" />
 
+    <!-- חזרה לטופס -->
     <Button
         android:id="@+id/btnAdd"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="הוספת כרטיס חדש" />
+        android:text="➕ כרטיס חדש" />
 
+    <!-- רשימת הכרטיסים מהענן -->
     <ListView
         android:id="@+id/lvCards"
         android:layout_width="match_parent"
@@ -38,4 +40,5 @@
         android:layout_height="wrap_content"
         android:text="חזרה"
         android:layout_marginTop="12dp" />
+
 </LinearLayout>

@@ -4,36 +4,35 @@ import android.content.Context;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 
-//המחלקה מכילה את פרטי ההתחברות של האפליקציה לFireBase
-//בנוסף היא בודקת האם הוא מוגדר ומאתחלת אותו איפה שצריך
-
 public class FirebaseConfig {
 
-    // ↓↓↓ מעתיקים את שלושת הערכים מ-FirebaseConfig.java של פרויקט פרק 11 ↓↓↓
-    public static final String API_KEY = "AIzaSyB1x2y3z4A5B6C7D8E9F0gHiJkLmNoPqRs";
-    public static final String APPLICATION_ID = "1:123456789012:android:a1b2c3d4e5f6a7b8";
-    public static final String DATABASE_URL = "https://phonebook-yb-default-rtdb.europe-west1.firebasedatabase.app";
-    // ↑↑↑ בלי רווחים, ובתוך המרכאות ↑↑↑
+    public static final String API_KEY =
+            "AIzaSyA9gbeF3nwlJ3eqt1asBJ7FPx4wVHFAioE";
 
-    //בדיקה האם Firebase מוגדר
-    public static boolean isConfigured() {
-        return !API_KEY.isEmpty() && !APPLICATION_ID.isEmpty() && !DATABASE_URL.isEmpty();
+    public static final String APPLICATION_ID =
+            "1:342399346963:android:d4f675e3156e1b517ad2e6";
+
+    public static final String DATABASE_URL =
+            "https://phonebook-yb-ce9b3-default-rtdb.firebaseio.com";
+
+    public static boolean isConfigured(Context context) {
+        return FirebaseApp.getApps(context).size() > 0;
     }
 
-    // מחבר את האפליקציה ל-Firebase. מספיק פעם אחת: בפעם השנייה יוצאים מיד
     public static void ensureInitialized(Context context) {
 
-        //בודק האם קיים חיבור של הפיירבייס באפליקציה
         if (!FirebaseApp.getApps(context).isEmpty()) {
-            return;                                     // כבר מחובר
+            return;
         }
 
-        //יצירת אובייקט שמכיל את הגדרות החיבור לפיירבייס
-        FirebaseOptions options = new FirebaseOptions.Builder().setApiKey(API_KEY)
-                .setApplicationId(APPLICATION_ID)
-                .setDatabaseUrl(DATABASE_URL).build();
+        FirebaseOptions options =
+                new FirebaseOptions.Builder()
+                        .setApiKey(API_KEY)
+                        .setApplicationId(APPLICATION_ID)
+                        .setDatabaseUrl(DATABASE_URL)
+                        .build();
 
-        //מבצעים בפועל אתחול של פיירבייס
-        FirebaseApp.initializeApp(context.getApplicationContext(), options);
+        FirebaseApp.initializeApp(
+                context.getApplicationContext(), options);
     }
 }
