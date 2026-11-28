@@ -1,5 +1,15 @@
 package com.example.newhomework;
 
+import android.Manifest;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.pm.PackageManager;
+import android.os.Build;
+import androidx.core.app.ActivityCompat;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
+import androidx.core.content.ContextCompat;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -19,6 +29,11 @@ public class MainActivity extends AppCompatActivity {
     public static final String KEY_JOB = "job";
     public static final String KEY_PHONE = "phone";
     public static final String KEY_SITE = "site";
+
+    // קבועים עבור מערכת ההתראות
+    public static final String CHANNEL_ID = "cards_channel";
+    private static final int NOTIF_ID = 201;
+    private static final int PERM_REQUEST = 1001;
 
     private EditText etName;
     private EditText etJob;
@@ -96,6 +111,8 @@ public class MainActivity extends AppCompatActivity {
 
                         Toast.makeText(this, "הכרטיס נשמר בהצלחה!", Toast.LENGTH_SHORT).show();
 
+                        notifyCardSaved(card);
+
                         // מעבר למסך הכרטיס
                         Intent intent = new Intent(MainActivity.this, CardActivity.class);
 
@@ -115,6 +132,10 @@ public class MainActivity extends AppCompatActivity {
                         Toast.makeText(this, "שמירת הכרטיס נכשלה: " + e.getMessage(), Toast.LENGTH_LONG).show();
                     });
         });
+
+        // יצירת ערוץ ובקשת הרשאה
+        createNotificationChannel();
+        askNotificationPermission();
     }
 
     // יצירת התפריט העליון
@@ -146,7 +167,7 @@ public class MainActivity extends AppCompatActivity {
         // מילוי פרטים לדוגמה
         if (id == R.id.action_fill) {
 
-            etName.setText("ישראל ישראלי");
+            etName.setText("תמר משולם");
             etJob.setText("מפתח תוכנה");
             etPhone.setText("0501234567");
             etSite.setText("www.example.com");
@@ -173,5 +194,84 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    // יצירת ערוץ ההתראות
+    private void createNotificationChannel() {
+
+        // ערוצים קיימים מאנדרואיד 8 ומעלה
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+
+            NotificationChannel channel = new NotificationChannel(
+                    CHANNEL_ID, "כרטיסים חדשים", NotificationManager.IMPORTANCE_DEFAULT);
+
+            NotificationManager manager = getSystemService(NotificationManager.class);
+
+            manager.createNotificationChannel(channel);
+        }
+    }
+
+    // בקשת הרשאה להצגת התראות
+    private void askNotificationPermission() {
+
+        // ההרשאה נדרשת מאנדרואיד 13 ומעלה
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)
+                    != PackageManager.PERMISSION_GRANTED)
+            {
+
+                ActivityCompat.requestPermissions(
+                        this, new String[]{Manifest.permission.POST_NOTIFICATIONS}, PERM_REQUEST);
+            }
+        }
+    }
+
+    // שליחת התראה לאחר שמירת כרטיס מוצלחת
+    private void notifyCardSaved(Card c) {
+
+        // יצירת Intent שיפתח את מסך הכרטיס
+        Intent intent = new Intent(this, CardActivity.class);
+
+        // העברת פרטי הכרטיס למסך הבא
+        intent.putExtra(KEY_CARD, c.getKey());
+        intent.putExtra(KEY_NAME, c.getName());
+        intent.putExtra(KEY_JOB, c.getJob());
+        intent.putExtra(KEY_PHONE, c.getPhone());
+        intent.putExtra(KEY_SITE, c.getSite());
+
+        // הגדרת אופן פתיחת המסך
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
+        // יצירת PendingIntent
+        PendingIntent pi = PendingIntent.getActivity(this, 0, intent,
+                PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+
+        // בניית ההתראה
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
+
+                        .setSmallIcon(android.R.drawable.ic_dialog_email)
+
+                        .setContentTitle("הכרטיס נשמר בענן")
+
+                        .setContentText("הכרטיס של " + c.getName())
+
+                        // חיבור הלחיצה למסך הכרטיס
+                        .setContentIntent(pi)
+
+                        .setAutoCancel(true);
+
+        // בדיקת הרשאה
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+
+            Toast.makeText(
+                    this, "אין הרשאה להצגת התראות", Toast.LENGTH_LONG).show();
+
+            return;
+        }
+
+        // שליחת ההתראה
+        NotificationManagerCompat.from(this).notify(NOTIF_ID, builder.build());
     }
 }
