@@ -63,7 +63,10 @@ public class CardActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         // חזרה למסך הקודם
-        if (id == android.R.id.home) {
+        if (id == android.R.id.home)
+        {
+            Intent intent = new Intent(CardActivity.this, MainActivity.class);
+            startActivity(intent);
             finish();
             return true;
         }
@@ -130,21 +133,19 @@ public class CardActivity extends AppCompatActivity {
 
             String address = site.trim();
 
-            if (!address.startsWith("http://")
-                    && !address.startsWith("https://")) {
+            if (!address.startsWith("http://") && !address.startsWith("https://"))
+            {
                 address = "https://" + address;
             }
 
-            Intent webIntent = new Intent(
-                    Intent.ACTION_VIEW,
-                    Uri.parse(address)
-            );
+            Intent webIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(address));
 
             try {
                 startActivity(webIntent);
-            } catch (ActivityNotFoundException e) {
-                Toast.makeText(this, "לא נמצא דפדפן",
-                        Toast.LENGTH_SHORT).show();
+            }
+            catch (ActivityNotFoundException e)
+            {
+                Toast.makeText(this, "לא נמצא דפדפן", Toast.LENGTH_SHORT).show();
             }
 
             return true;

@@ -12,7 +12,6 @@ public class CardsDb {
 
         FirebaseConfig.ensureInitialized(context);
 
-        return FirebaseDatabase.getInstance()
-                .getReference("cards");
+        return FirebaseDatabase.getInstance().getReference("cards");
     }
 }
