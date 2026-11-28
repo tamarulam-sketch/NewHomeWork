@@ -1,23 +1,19 @@
-
 package com.example.newhomework;
 
+import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
+public class CardActivity extends Activity {
 
-// מחלקה המציגה כרטיס ביקור ומאפשרת לבצע פעולות עליו
-public class CardActivity extends AppCompatActivity {
-
-    // פרטי הכרטיס
-    private String key;
     private String name;
     private String job;
     private String phone;
@@ -28,17 +24,9 @@ public class CardActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_card);
 
-        // הגדרת הכותרת וחץ החזרה בסרגל העליון
-        setTitle("הכרטיסים");
-
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        }
-
         // קבלת הנתונים מהמסך הקודם
         Intent receivedIntent = getIntent();
 
-        key = receivedIntent.getStringExtra(MainActivity.KEY_CARD);
         name = receivedIntent.getStringExtra(MainActivity.KEY_NAME);
         job = receivedIntent.getStringExtra(MainActivity.KEY_JOB);
         phone = receivedIntent.getStringExtra(MainActivity.KEY_PHONE);
@@ -50,7 +38,7 @@ public class CardActivity extends AppCompatActivity {
         if (phone == null) phone = "";
         if (site == null) site = "";
 
-        // חיבור רכיבי המסך
+        // חיבור הרכיבים מה-XML
         TextView tvName = findViewById(R.id.tvName);
         TextView tvJob = findViewById(R.id.tvJob);
         TextView tvPhone = findViewById(R.id.tvPhone);
@@ -62,56 +50,39 @@ public class CardActivity extends AppCompatActivity {
         tvPhone.setText("📞 " + phone);
         tvSite.setText("🌐 " + site);
 
-        // כפתור חזרה שנמצא במסך
+        // כפתור החזרה נשאר במסך
         Button btnBack = findViewById(R.id.btnBack);
 
-        btnBack.setOnClickListener(v -> finish());
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
-    // יצירת התפריט העליון
+    // יצירת התפריט בסרגל העליון
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.card_menu, menu);
         return true;
     }
 
-    // טיפול בלחיצות על התפריט
+    // טיפול בבחירה בתפריט
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
         int id = item.getItemId();
 
-        // חזרה למסך הקודם
-        if (id == android.R.id.home) {
-            finish();
-            return true;
-        }
-
-        // עריכת הכרטיס
-        if (id == R.id.action_edit) {
-
-            Intent editIntent =
-                    new Intent(this, MainActivity.class);
-
-            editIntent.putExtra(MainActivity.KEY_CARD, key);
-            editIntent.putExtra(MainActivity.KEY_NAME, name);
-            editIntent.putExtra(MainActivity.KEY_JOB, job);
-            editIntent.putExtra(MainActivity.KEY_PHONE, phone);
-            editIntent.putExtra(MainActivity.KEY_SITE, site);
-
-            startActivity(editIntent);
-            finish();
-
-            return true;
-        }
-
         // חיוג למספר הטלפון
         if (id == R.id.action_dial) {
 
             if (phone.trim().isEmpty()) {
-                Toast.makeText(this,
+                Toast.makeText(
+                        this,
                         "לא הוזן מספר טלפון",
-                        Toast.LENGTH_SHORT).show();
+                        Toast.LENGTH_SHORT
+                ).show();
                 return true;
             }
 
@@ -123,9 +94,11 @@ public class CardActivity extends AppCompatActivity {
             try {
                 startActivity(dialIntent);
             } catch (ActivityNotFoundException e) {
-                Toast.makeText(this,
+                Toast.makeText(
+                        this,
                         "אין אפליקציה מתאימה",
-                        Toast.LENGTH_SHORT).show();
+                        Toast.LENGTH_SHORT
+                ).show();
             }
 
             return true;
@@ -140,9 +113,7 @@ public class CardActivity extends AppCompatActivity {
                     + "טלפון: " + phone + "\n"
                     + "אתר: " + site;
 
-            Intent shareIntent =
-                    new Intent(Intent.ACTION_SEND);
-
+            Intent shareIntent = new Intent(Intent.ACTION_SEND);
             shareIntent.setType("text/plain");
             shareIntent.putExtra(Intent.EXTRA_TEXT, cardText);
 
@@ -154,9 +125,11 @@ public class CardActivity extends AppCompatActivity {
             try {
                 startActivity(chooser);
             } catch (ActivityNotFoundException e) {
-                Toast.makeText(this,
+                Toast.makeText(
+                        this,
                         "אין אפליקציה מתאימה",
-                        Toast.LENGTH_SHORT).show();
+                        Toast.LENGTH_SHORT
+                ).show();
             }
 
             return true;
@@ -166,9 +139,11 @@ public class CardActivity extends AppCompatActivity {
         if (id == R.id.action_web) {
 
             if (site.trim().isEmpty()) {
-                Toast.makeText(this,
+                Toast.makeText(
+                        this,
                         "לא הוזן אתר",
-                        Toast.LENGTH_SHORT).show();
+                        Toast.LENGTH_SHORT
+                ).show();
                 return true;
             }
 
@@ -187,9 +162,11 @@ public class CardActivity extends AppCompatActivity {
             try {
                 startActivity(webIntent);
             } catch (ActivityNotFoundException e) {
-                Toast.makeText(this,
+                Toast.makeText(
+                        this,
                         "אין אפליקציה מתאימה",
-                        Toast.LENGTH_SHORT).show();
+                        Toast.LENGTH_SHORT
+                ).show();
             }
 
             return true;
