@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 public class CardActivity extends AppCompatActivity {
 
     private String name, job, phone, site;
+    private String cardKey;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +35,7 @@ public class CardActivity extends AppCompatActivity {
         job = receivedIntent.getStringExtra(MainActivity.KEY_JOB);
         phone = receivedIntent.getStringExtra(MainActivity.KEY_PHONE);
         site = receivedIntent.getStringExtra(MainActivity.KEY_SITE);
+        cardKey = receivedIntent.getStringExtra(MainActivity.KEY_CARD);
 
         if (name == null) name = "";
         if (job == null) job = "";
@@ -70,15 +72,11 @@ public class CardActivity extends AppCompatActivity {
         if (id == R.id.action_dial) {
 
             if (phone.trim().isEmpty()) {
-                Toast.makeText(this, "לא הוזן מספר טלפון",
-                        Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "לא הוזן מספר טלפון", Toast.LENGTH_SHORT).show();
                 return true;
             }
 
-            Intent dialIntent = new Intent(
-                    Intent.ACTION_DIAL,
-                    Uri.parse("tel:" + phone)
-            );
+            Intent dialIntent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + phone));
 
             startActivity(dialIntent);
             return true;
@@ -98,9 +96,7 @@ public class CardActivity extends AppCompatActivity {
             shareIntent.setType("text/plain");
             shareIntent.putExtra(Intent.EXTRA_TEXT, cardText);
 
-            startActivity(Intent.createChooser(
-                    shareIntent, "שתף כרטיס עם..."
-            ));
+            startActivity(Intent.createChooser(shareIntent, "שתף כרטיס עם..."));
 
             return true;
         }
@@ -109,14 +105,14 @@ public class CardActivity extends AppCompatActivity {
         if (id == R.id.action_edit) {
 
             Intent intent = new Intent(
-                    CardActivity.this,
-                    MainActivity.class
+                    CardActivity.this, MainActivity.class
             );
 
             intent.putExtra(MainActivity.KEY_NAME, name);
             intent.putExtra(MainActivity.KEY_JOB, job);
             intent.putExtra(MainActivity.KEY_PHONE, phone);
             intent.putExtra(MainActivity.KEY_SITE, site);
+            intent.putExtra(MainActivity.KEY_CARD, cardKey);
 
             startActivity(intent);
             finish();

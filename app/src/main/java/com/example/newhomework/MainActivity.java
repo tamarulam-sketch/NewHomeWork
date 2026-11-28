@@ -1,4 +1,3 @@
-
 package com.example.newhomework;
 
 import android.content.Intent;
@@ -10,6 +9,8 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.firebase.database.DatabaseReference;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -50,34 +51,69 @@ public class MainActivity extends AppCompatActivity {
 
         btnCreateCard.setOnClickListener(v -> {
 
-            // בדיקה שכל השדות מלאים
-            if (etName.getText().toString().trim().isEmpty()
-                    || etJob.getText().toString().trim().isEmpty()
-                    || etPhone.getText().toString().trim().isEmpty()
-                    || etSite.getText().toString().trim().isEmpty()) {
+            // קבלת הפרטים מהשדות
+            String name = etName.getText().toString().trim();
+            String job = etJob.getText().toString().trim();
+            String phone = etPhone.getText().toString().trim();
+            String site = etSite.getText().toString().trim();
 
-                Toast.makeText(this,
-                        "יש למלא את כל הפרטים",
-                        Toast.LENGTH_SHORT).show();
+            // בדיקה שכל השדות מלאים
+            if (name.isEmpty() || job.isEmpty() || phone.isEmpty() || site.isEmpty()) {
+
+                Toast.makeText(this, "יש למלא את כל הפרטים", Toast.LENGTH_SHORT).show();
 
                 return;
             }
 
-            // יצירת מעבר למסך הכרטיס
-            Intent intent = new Intent(MainActivity.this, CardActivity.class
-            );
+            // יצירת אובייקט כרטיס
+            Card card = new Card(name, job, phone, site);
 
-            intent.putExtra(KEY_NAME, etName.getText().toString().trim());
+            // קבלת הפניה למסד הנתונים
+            DatabaseReference ref = CardsDb.cards(this);
 
-            intent.putExtra(KEY_JOB, etJob.getText().toString().trim());
+            // בדיקה האם עורכים כרטיס קיים
+            String key = receivedIntent.getStringExtra(KEY_CARD);
 
-            intent.putExtra(KEY_PHONE, etPhone.getText().toString().trim());
+            if (key == null)
+            {
+                // יצירת מפתח חדש לכרטיס
+                key = ref.push().getKey();
+            }
 
-            intent.putExtra(KEY_SITE, etSite.getText().toString().trim());
+            if (key == null)
+            {
+                Toast.makeText(this, "לא ניתן ליצור כרטיס", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            final String savedKey = key;
 
-            Toast.makeText(this, "הכרטיס נוצר בהצלחה!", Toast.LENGTH_SHORT).show();
+            // שמירת המפתח בכרטיס
+            card.setKey(savedKey);
 
-            startActivity(intent);
+            // שמירת הכרטיס ב-Firebase
+            ref.child(savedKey).setValue(card)
+                    .addOnSuccessListener(unused -> {
+
+                        Toast.makeText(this, "הכרטיס נשמר בהצלחה!", Toast.LENGTH_SHORT).show();
+
+                        // מעבר למסך הכרטיס
+                        Intent intent = new Intent(MainActivity.this, CardActivity.class);
+
+                        intent.putExtra(KEY_CARD, savedKey);
+                        intent.putExtra(KEY_NAME, name);
+                        intent.putExtra(KEY_JOB, job);
+                        intent.putExtra(KEY_PHONE, phone);
+                        intent.putExtra(KEY_SITE, site);
+
+                        startActivity(intent);
+                        finish();
+                    })
+
+                    .addOnFailureListener(e ->
+                    {
+
+                        Toast.makeText(this, "שמירת הכרטיס נכשלה: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                    });
         });
     }
 
@@ -118,13 +154,10 @@ public class MainActivity extends AppCompatActivity {
             return true;
         }
 
-        // רשימת כרטיסים
+        // מעבר לרשימת הכרטיסים
         if (id == R.id.action_list) {
 
-            Intent intent = new Intent(
-                    MainActivity.this,
-                    CardsListActivity.class
-            );
+            Intent intent = new Intent(MainActivity.this, CardsListActivity.class);
 
             startActivity(intent);
             return true;
@@ -133,8 +166,7 @@ public class MainActivity extends AppCompatActivity {
         // מעבר למסך אודות
         if (id == R.id.action_about) {
 
-            Intent intent = new Intent(MainActivity.this, AboutActivity.class
-            );
+            Intent intent = new Intent(MainActivity.this, AboutActivity.class);
 
             startActivity(intent);
             return true;
