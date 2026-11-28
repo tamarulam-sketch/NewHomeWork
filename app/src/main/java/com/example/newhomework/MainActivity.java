@@ -1,3 +1,4 @@
+
 package com.example.newhomework;
 
 import android.content.Intent;
@@ -28,23 +29,53 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // חיבור ארבעת שדות הטופס
+        // חיבור שדות הטופס
         etName = findViewById(R.id.etName);
         etJob = findViewById(R.id.etJob);
         etPhone = findViewById(R.id.etPhone);
         etSite = findViewById(R.id.etSite);
 
-        // מעבר למסך הכרטיס
+        // קבלת פרטים קודמים במקרה של עריכת כרטיס
+        Intent receivedIntent = getIntent();
+
+        if (receivedIntent.hasExtra(KEY_NAME)) {
+            etName.setText(receivedIntent.getStringExtra(KEY_NAME));
+            etJob.setText(receivedIntent.getStringExtra(KEY_JOB));
+            etPhone.setText(receivedIntent.getStringExtra(KEY_PHONE));
+            etSite.setText(receivedIntent.getStringExtra(KEY_SITE));
+        }
+
+        // כפתור יצירת כרטיס
         Button btnCreateCard = findViewById(R.id.btnCreateCard);
 
         btnCreateCard.setOnClickListener(v -> {
-            Intent intent = new Intent(
-                    MainActivity.this, CardActivity.class);
+
+            // בדיקה שכל השדות מלאים
+            if (etName.getText().toString().trim().isEmpty()
+                    || etJob.getText().toString().trim().isEmpty()
+                    || etPhone.getText().toString().trim().isEmpty()
+                    || etSite.getText().toString().trim().isEmpty()) {
+
+                Toast.makeText(this,
+                        "יש למלא את כל הפרטים",
+                        Toast.LENGTH_SHORT).show();
+
+                return;
+            }
+
+            // יצירת מעבר למסך הכרטיס
+            Intent intent = new Intent(MainActivity.this, CardActivity.class
+            );
 
             intent.putExtra(KEY_NAME, etName.getText().toString().trim());
+
             intent.putExtra(KEY_JOB, etJob.getText().toString().trim());
+
             intent.putExtra(KEY_PHONE, etPhone.getText().toString().trim());
+
             intent.putExtra(KEY_SITE, etSite.getText().toString().trim());
+
+            Toast.makeText(this, "הכרטיס נוצר בהצלחה!", Toast.LENGTH_SHORT).show();
 
             startActivity(intent);
         });
@@ -57,50 +88,54 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-    // טיפול בלחיצה על פריט בתפריט
+    // טיפול בבחירת אפשרות בתפריט
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
         int id = item.getItemId();
 
-        // נקה
+        // ניקוי הטופס
         if (id == R.id.action_clear) {
-
-            boolean isEmpty =
-                    etName.getText().toString().trim().isEmpty()
-                            && etJob.getText().toString().trim().isEmpty()
-                            && etPhone.getText().toString().trim().isEmpty()
-                            && etSite.getText().toString().trim().isEmpty();
 
             etName.setText("");
             etJob.setText("");
             etPhone.setText("");
             etSite.setText("");
 
-            if (isEmpty) {
-                Toast.makeText(this, "הטופס כבר ריק",
-                        Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(this, "הטופס נוקה",
-                        Toast.LENGTH_SHORT).show();
-            }
+            Toast.makeText(this, "הטופס נוקה", Toast.LENGTH_SHORT).show();
 
             return true;
         }
 
-        // דוגמה
+        // מילוי פרטים לדוגמה
         if (id == R.id.action_fill) {
+
             etName.setText("ישראל ישראלי");
             etJob.setText("מפתח תוכנה");
             etPhone.setText("0501234567");
             etSite.setText("www.example.com");
+
             return true;
         }
 
-        // אודות
-        if (id == R.id.action_about) {
+        // רשימת כרטיסים
+        if (id == R.id.action_list) {
+
             Intent intent = new Intent(
-                    MainActivity.this, AboutActivity.class);
+                    MainActivity.this,
+                    CardsListActivity.class
+            );
+
+            startActivity(intent);
+            return true;
+        }
+
+        // מעבר למסך אודות
+        if (id == R.id.action_about) {
+
+            Intent intent = new Intent(MainActivity.this, AboutActivity.class
+            );
+
             startActivity(intent);
             return true;
         }

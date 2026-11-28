@@ -3,9 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/action_edit"
-        android:title="עריכה"
-        app:showAsAction="never" />
+        android:id="@+id/action_dial"
+        android:title="חייג"
+        android:icon="@android:drawable/ic_menu_call"
+        app:showAsAction="always" />
 
     <item
         android:id="@+id/action_share"
@@ -14,9 +15,9 @@
         app:showAsAction="always" />
 
     <item
-        android:id="@+id/action_dial"
-        android:title="חייג"
-        app:showAsAction="ifRoom" />
+        android:id="@+id/action_edit"
+        android:title="ערוך כרטיס"
+        app:showAsAction="never" />
 
     <item
         android:id="@+id/action_web"

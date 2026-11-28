@@ -2,85 +2,64 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true">
+    android:fillViewport="true"
+    android:background="#F5F5F9">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical"
         android:padding="24dp"
-        android:gravity="center_horizontal"
+        android:gravity="center"
         android:layoutDirection="rtl">
 
-        <TextView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="הכרטיס שלי 📇"
-            android:textSize="28sp"
-            android:textStyle="bold"
-            android:gravity="center"
-            android:textColor="#D95D5D"
-            android:padding="16dp" />
+            android:orientation="vertical"
+            android:padding="28dp"
+            android:background="@drawable/card_background"
+            android:elevation="8dp">
 
-        <TextView
-            android:id="@+id/tvName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="28sp"
-            android:textStyle="bold"
-            android:gravity="center"
-            android:padding="8dp" />
+            <TextView
+                android:id="@+id/tvName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="28sp"
+                android:textStyle="bold"
+                android:textColor="#FFFFFF"
+                android:gravity="right"
+                android:padding="6dp" />
 
-        <TextView
-            android:id="@+id/tvJob"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:gravity="center"
-            android:padding="8dp" />
+            <TextView
+                android:id="@+id/tvJob"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:textColor="#E6E0F5"
+                android:gravity="right"
+                android:padding="6dp" />
 
-        <TextView
-            android:id="@+id/tvPhone"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:gravity="center"
-            android:padding="8dp" />
+            <TextView
+                android:id="@+id/tvPhone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="19sp"
+                android:textColor="#FFFFFF"
+                android:gravity="right"
+                android:padding="6dp" />
 
-        <TextView
-            android:id="@+id/tvSite"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:gravity="center"
-            android:padding="8dp"
-            android:textIsSelectable="true" />
+            <TextView
+                android:id="@+id/tvSite"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="19sp"
+                android:textColor="#FFFFFF"
+                android:gravity="right"
+                android:padding="6dp" />
 
-<!--        <Button-->
-<!--            android:id="@+id/btnDial"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginTop="20dp"-->
-<!--            android:text="📞 חייג" />-->
-
-
-<!--        <Button-->
-<!--            android:id="@+id/btnOpenSite"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:text="🌐 פתח אתר" />-->
-
-<!--        <Button-->
-<!--            android:id="@+id/btnShare"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:text="📤 שתף" />-->
-
-        <Button
-            android:id="@+id/btnBack"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="חזרה" />
+        </LinearLayout>
 
     </LinearLayout>
+
 </ScrollView>
